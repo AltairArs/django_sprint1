@@ -42,13 +42,16 @@ posts = [
                 Весь этот день я хлопотал  около вещей: укрывал и
                 укутывал их, чтобы не испортились от дождя.''',
     },
-] 
+]
+
 
 def index(request):
     return render(request, 'blog/index.html', {'posts': reversed(posts)})
 
+
 def post_detail(request, id):
     return render(request, 'blog/detail.html', {'post': posts[id]})
+
 
 def category_posts(request, category_slug):
     return render(request, 'blog/category.html', {
