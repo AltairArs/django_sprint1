@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 # Create your views here.
 posts = [
@@ -44,13 +45,25 @@ posts = [
     },
 ]
 
+post_dictionary = {item['id']: item for item in posts}
+
 
 def index(request):
     return render(request, 'blog/index.html', {'posts': reversed(posts)})
 
 
-def post_detail(request, id):
-    return render(request, 'blog/detail.html', {'post': posts[id]})
+def post_detail(request, post_id):
+
+    if post_id not in post_dictionary.keys():
+        raise Http404(f'Пост с таким id не существует: {post_id}')
+    
+    template = 'blog/detail.html'
+
+    context = {
+        'post': post_dictionary.get(post_id)
+    }
+
+    return render(request, template, context)
 
 
 def category_posts(request, category_slug):
